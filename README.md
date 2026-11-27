@@ -33,38 +33,63 @@ It also includes automated fault injection, exhaustive pattern sweeps for select
 
 The design is organized into reusable JTAG components and a two-device board-level test architecture.
 
-### Main Architecture
 
-```text
-                 JTAG TEST INTERFACE
-                TCK | TMS | TDI | TDO
-                         |
-                         v
-              +----------------------+
-              |    JTAG Device A     |
-              |                      |
-              |   TAP Controller     |
-              |   Instruction Reg    |
-              |   IDCODE / BYPASS    |
-              |   Boundary Scan Reg  |
-              +----------------------+
-                         |
-                         | Serial TDO/TDI
-                         |
-              +----------------------+
-              |    JTAG Device B     |
-              |                      |
-              |   TAP Controller     |
-              |   Instruction Reg    |
-              |   IDCODE / BYPASS    |
-              |   Boundary Scan Reg  |
-              +----------------------+
-                         |
-                         v
-              +----------------------+
-              | PCB Interconnect     |
-              | and Fault Injection  |
-              +----------------------+
+### JTAG Boundary Scan Architecture
+
+```mermaid
+flowchart TB
+    subgraph JTAG["JTAG Test Interface"]
+        TCK["TCK"]
+        TMS["TMS"]
+        TRST["TRST_N"]
+        TDI["TDI"]
+        TDO["TDO"]
+    end
+
+    subgraph DEV_A["JTAG Device A"]
+        TAP_A["TAP Controller"]
+        IR_A["Instruction Register"]
+        DR_A["IDCODE / BYPASS"]
+        BSR_A["Boundary Scan Register"]
+        TAP_A --> IR_A
+        IR_A --> DR_A
+        IR_A --> BSR_A
+    end
+
+    subgraph DEV_B["JTAG Device B"]
+        TAP_B["TAP Controller"]
+        IR_B["Instruction Register"]
+        DR_B["IDCODE / BYPASS"]
+        BSR_B["Boundary Scan Register"]
+        TAP_B --> IR_B
+        IR_B --> DR_B
+        IR_B --> BSR_B
+    end
+
+    TDI -->|Serial input| DEV_A
+    DEV_A -->|TDO to TDI| DEV_B
+    DEV_B -->|Serial output| TDO
+
+    TCK --> TAP_A
+    TCK --> TAP_B
+    TMS --> TAP_A
+    TMS --> TAP_B
+    TRST --> TAP_A
+    TRST --> TAP_B
+
+    subgraph PCB["PCB Interconnect Test Model"]
+        FAULT["Fault Injection Model"]
+        INTERCONNECT["Bidirectional Interconnect"]
+        FAULT --- INTERCONNECT
+    end
+
+    BSR_A <-->|Drive / Capture| INTERCONNECT
+    BSR_B <-->|Drive / Capture| INTERCONNECT
+
+    style DEV_A fill:#e8f1ff,stroke:#3973ac,color:#111
+    style DEV_B fill:#e8f1ff,stroke:#3973ac,color:#111
+    style PCB fill:#eaf7ed,stroke:#438653,color:#111
+    style JTAG fill:#fff4df,stroke:#bd8730,color:#111
 ```
 
 Both devices share TCK, TMS, and reset signals. Device A's TDO connects to Device B's TDI, forming a serial JTAG daisy chain.

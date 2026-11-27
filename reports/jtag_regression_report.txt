@@ -1,0 +1,60 @@
+========================================
+       JTAG UNIFIED FAULT REGRESSION
+========================================
+
+----------------------------------------
+Running: jtag_top_test
+----------------------------------------
+[PASS] jtag_top_test
+
+----------------------------------------
+Running: jtag_board_test
+----------------------------------------
+[PASS] jtag_board_test
+
+----------------------------------------
+Running: jtag_board_extest_test
+----------------------------------------
+[PASS] jtag_board_extest_test
+
+----------------------------------------
+Running: jtag_extest_fault_test
+----------------------------------------
+[PASS] jtag_extest_fault_test
+
+----------------------------------------
+Running: jtag_stuck_at_sweep
+----------------------------------------
+[PASS] jtag_stuck_at_sweep
+
+----------------------------------------
+Running: jtag_bridging_sweep
+----------------------------------------
+[PASS] jtag_bridging_sweep
+
+----------------------------------------
+Running: jtag_open_circuit_sweep
+----------------------------------------
+[PASS] jtag_open_circuit_sweep
+
+========================================
+       COMBINED FAULT COVERAGE
+========================================
+Fault category       Total    Detected
+----------------------------------------
+Stuck-at faults      32       32
+Bridging faults      112      112
+Open-circuit faults  16       16
+----------------------------------------
+Total fault cases    : 160
+Detected faults      : 160
+Undetected faults    : 0
+Combined coverage    : 100%
+
+========================================
+         FINAL REGRESSION SUMMARY
+========================================
+Total testbenches : 7
+Passed            : 7
+Failed            : 0
+RESULT : ALL TESTS PASSED

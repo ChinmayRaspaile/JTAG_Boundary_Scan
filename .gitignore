@@ -6,3 +6,8 @@ waves/*
 *.fst
 *.log
 *.out
+# Generated regression logs
+reports/*.log
+
+# Keep final regression summary
+!reports/jtag_regression_report.txt

@@ -55,9 +55,10 @@ module board_interconnect_fault #(
                         device_a_in[fault_bit_a] = 1'bz;
                 end
 
-                // Bridging fault: wired-AND model
+                                // Wired-AND bridging fault
                 3'd4: begin
                     if (fault_direction == 1'b0) begin
+
                         device_b_in[fault_bit_a] =
                             device_a_out[fault_bit_a] &
                             device_a_out[fault_bit_b];
@@ -65,8 +66,10 @@ module board_interconnect_fault #(
                         device_b_in[fault_bit_b] =
                             device_a_out[fault_bit_a] &
                             device_a_out[fault_bit_b];
+
                     end
                     else begin
+
                         device_a_in[fault_bit_a] =
                             device_b_out[fault_bit_a] &
                             device_b_out[fault_bit_b];
@@ -74,9 +77,35 @@ module board_interconnect_fault #(
                         device_a_in[fault_bit_b] =
                             device_b_out[fault_bit_a] &
                             device_b_out[fault_bit_b];
+
                     end
                 end
 
+                // Wired-OR bridging fault
+                3'd5: begin
+                    if (fault_direction == 1'b0) begin
+
+                        device_b_in[fault_bit_a] =
+                            device_a_out[fault_bit_a] |
+                            device_a_out[fault_bit_b];
+
+                        device_b_in[fault_bit_b] =
+                            device_a_out[fault_bit_a] |
+                            device_a_out[fault_bit_b];
+
+                    end
+                    else begin
+
+                        device_a_in[fault_bit_a] =
+                            device_b_out[fault_bit_a] |
+                            device_b_out[fault_bit_b];
+
+                        device_a_in[fault_bit_b] =
+                            device_b_out[fault_bit_a] |
+                            device_b_out[fault_bit_b];
+
+                    end
+                end
                 default: begin
                     device_b_in = device_a_out;
                     device_a_in = device_b_out;

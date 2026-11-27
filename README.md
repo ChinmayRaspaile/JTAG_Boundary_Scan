@@ -187,6 +187,21 @@ The unified regression script executes seven major testbenches:
 6. Automated bridging fault sweep.
 7. Automated open-circuit fault sweep.
 
+### 1. JTAG EXTEST Interconnect Testing
+Demonstrates bidirectional data transfer between Device A and Device B using boundary scan.
+
+![JTAG EXTEST Waveform](docs/images/jtag_extest_waveform.jpg)
+
+### 2. JTAG Fault Detection
+Demonstrates fault injection and detection for stuck-at, open-circuit, and bridging fault models.
+
+![JTAG Fault Detection](docs/images/jtag_fault_detection_waveform.jpg)
+
+### 3. Automated Regression and Fault Coverage
+All 7 testbenches passed, with 160 out of 160 simulated fault cases detected.
+
+![JTAG Regression Coverage](docs/images/jtag_regression_coverage.jpg)
+
 ### Final Regression Summary
 
 | Metric | Result |
